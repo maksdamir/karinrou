@@ -7,7 +7,8 @@ var bodyParser = require('body-parser');
 
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://karinrou:Bqj95YWH8mvEr0KnkMWK6lCBSpq2mD5bGMWtHA0BDWFxc5eC9hAOU15QL5UDI1ITkha0YKs2uuyF49d4amzu3w==@karinrou.documents.azure.com:10255/?ssl=true&replicaSet=globaldb');
+//mongoose.connect('mongodb://karinrou:Bqj95YWH8mvEr0KnkMWK6lCBSpq2mD5bGMWtHA0BDWFxc5eC9hAOU15QL5UDI1ITkha0YKs2uuyF49d4amzu3w==@karinrou.documents.azure.com:10255/?ssl=true&replicaSet=globaldb');
+mongoose.connect('mongodb://admin:admin@ds153501.mlab.com:53501/heroku_bxshszlm');
 
 
 var index = require('./routes/index');

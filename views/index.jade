@@ -10,19 +10,19 @@ block content
 				td
 					each gallery in galleries_row_1
 						a(href='/galleries/#{gallery.name}').album_box
-							img(src='') 
+							img(src='https://res.cloudinary.com/hf7ourhvw/image/upload/w_118,h_118,c_fill/#{gallery.cloudinary_public_id}') 
 							.album_box_title #{gallery.title}
 			tr
 				td
 					each gallery in galleries_row_2
 						a(href='/galleries/#{gallery.name}').album_box
-							img(src='') 
+							img(src='https://res.cloudinary.com/hf7ourhvw/image/upload/w_118,h_118,c_fill/#{gallery.cloudinary_public_id}') 
 							.album_box_title #{gallery.title}
 			tr
 				td
 					each gallery in galleries_row_3
 						a(href='/galleries/#{gallery.name}').album_box
-							img(src='') 
+							img(src='https://res.cloudinary.com/hf7ourhvw/image/upload/w_118,h_118,c_fill/#{gallery.cloudinary_public_id}') 
 							.album_box_title #{gallery.title}
 
 		script.
