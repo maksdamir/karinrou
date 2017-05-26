@@ -4,6 +4,17 @@ var mongoose = require('mongoose');
 var Gallery = require('../models/gallery');
 var Photo = require('../models/photo');
 
+var path = require('path');
+var formidable = require('formidable');
+var fs = require('fs');
+
+var cloudinary = require('cloudinary');
+cloudinary.config({ 
+  cloud_name: 'hf7ourhvw', 
+  api_key: '926943892711519', 
+  api_secret: '7VY3VBS0dvzXpDfwGm4aHnk4UZ8' 
+});
+
 router.get('/', function(req, res, next) {
     Gallery.find({},{},function(e,galleries){
         res.render('index', {
@@ -16,7 +27,6 @@ router.get('/', function(req, res, next) {
 
 router.get('/photos', function(req, res) {
 	Photo.find({},{}, function(e, photos) {
-		console.log(photos);
 		res.render('photos', {
 			"photos" : photos
 		});
@@ -24,12 +34,45 @@ router.get('/photos', function(req, res) {
 });
 
 router.post('/photos', function(req, res) {
-	var new_photo = new Photo(req.body);
-	new_photo.save(function(err, photo) {
-		if (err)
-			res.send(err);
-		res.json(photo);
+
+	// create an incoming form object
+	var form = new formidable.IncomingForm();
+
+	// specify that we want to allow the user to upload multiple files in a single request
+	form.multiples = true;
+
+	// store all uploads in the /uploads directory
+	//form.uploadDir = path.join(__dirname, '/uploads');
+
+	// every time a file has been uploaded successfully,
+	// rename it to it's orignal name
+	form.on('file', function(field, file) {
+		console.log(field, file);
+		cloudinary.uploader.upload(file.path, function(result) { console.log(result) });
+		//fs.rename(file.path, path.join(form.uploadDir, file.name));
 	});
+
+	// log any errors that occur
+	form.on('error', function(err) {
+		console.log('An error has occured: \n' + err);
+	});
+
+	// once all the files have been uploaded, send a response to the client
+	form.on('end', function() {
+		res.end('success');
+	});
+
+	// parse the incoming request containing the form data
+	form.parse(req);
+
+
+	//res.json({});
+	// var new_photo = new Photo(req.body);
+	// new_photo.save(function(err, photo) {
+	// 	if (err)
+	// 		res.send(err);
+	// 	res.json(photo);
+	// });
 });
 
 router.get('/galleries', function(req, res) {
@@ -37,9 +80,7 @@ router.get('/galleries', function(req, res) {
 	// res.redirect('/');
 
     Gallery.find({},{},function(e,galleries){
-    	console.log(galleries);
     	Photo.find({ '_id' : { $in: [galleries[0].photos]} }, {}, function(e2, photos) {
-    		console.log(photos);
 	        res.render('galleries', {
 	            "galleries" : galleries
 	        });

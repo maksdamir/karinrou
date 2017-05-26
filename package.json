@@ -16,9 +16,11 @@
   "homepage": "https://github.com/maksdamir/karinrou/blob/master/README.md",
   "dependencies": {
     "body-parser": "~1.17.1",
+    "cloudinary": "^1.9.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
     "express": "~4.15.2",
+    "formidable": "^1.1.1",
     "jade": "~1.11.0",
     "mongodb": "^2.2.27",
     "mongoose": "^4.10.2",
