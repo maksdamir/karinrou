@@ -1,0 +1,30 @@
+{
+  "name": "karinrou",
+  "version": "1.0.0",
+  "private": true,
+  "description": "karinrou",
+  "main": "app.js",
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maksdamir/karinrou.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://github.com/maksdamir/karinrou/blob/master/README.md",
+  "dependencies": {
+    "body-parser": "~1.17.1",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.3",
+    "express": "~4.15.2",
+    "jade": "~1.11.0",
+    "mongodb": "^2.2.27",
+    "mongoose": "^4.10.2",
+    "monk": "^5.0.2",
+    "morgan": "~1.8.1",
+    "serve-favicon": "~2.4.2"
+  },
+  "devDependencies": {}
+}

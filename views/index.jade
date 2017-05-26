@@ -1,0 +1,56 @@
+extends layout
+
+block content
+	#head
+		#auth_log Karin Rou
+		#appeal_to_guests Уважаемые посетители, если вы увидели себя на фотографии на сайте, и в вашем архиве отсутствует этот снимок… Вы можете получить копию фотографии по вашему личному запросу на почту.
+	#body
+		table#albums_holder
+			tr
+				td
+					each gallery in galleries_row_1
+						a(href='/galleries/#{gallery.name}').album_box
+							img(src='') 
+							.album_box_title #{gallery.title}
+			tr
+				td
+					each gallery in galleries_row_2
+						a(href='/galleries/#{gallery.name}').album_box
+							img(src='') 
+							.album_box_title #{gallery.title}
+			tr
+				td
+					each gallery in galleries_row_3
+						a(href='/galleries/#{gallery.name}').album_box
+							img(src='') 
+							.album_box_title #{gallery.title}
+
+		script.
+			$(window).resize(function(){
+				if (($(this).height() > 600) && ($(this).height() < 800))
+				{
+					$(".album_box img").width(($(this).height() - 400)/2)
+					$(".album_box").width(($(this).height() - 400)/2)
+					$(".album_box").height(($(this).height() - 400)/2)
+					$(".album_box_title").css('font-size', ($(this).height() - 200)*14/600)
+				}
+				else if ($(this).height() >= 800){
+					$(".album_box img").width(200)
+					$(".album_box").width(200)
+					$(".album_box").height(200)
+					$(".album_box_title").css('font-size', 14)
+				}
+				else {
+					$(".album_box img").width(100)
+					$(".album_box").width(100)
+					$(".album_box").height(100)
+					$(".album_box_title").css('font-size', 10)
+				}
+			});
+			$(function(){
+				$(window).trigger('resize')
+			});
+
+	#footer
+		span email:
+		a(href="mailto:forKarinRou@yandex.ru") forKarinRou@yandex.ru

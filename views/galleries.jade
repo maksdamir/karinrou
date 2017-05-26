@@ -1,0 +1,43 @@
+doctype html
+html
+	head
+		title='Karin Rou'
+		script(src='/javascripts/jquery-1.11.0.min.js')
+		link(rel='stylesheet', href='/stylesheets/style.css')
+		script.
+			$(function() {
+				$('.update_gallery').click(function(){
+					var gallery_object = $(this).parent();
+					var gallery_id = gallery_object.attr("gallery_id");
+					console.log(gallery_object.find('input').val());
+
+					$.ajax({
+						url: '/gallery/',
+						type: 'PUT',
+						data: "name=John&location=Boston",
+						success: function(data) {
+							alert('Load was performed.');
+						}
+					});
+				});
+			});
+	body
+		form(action='/galleries', method='post')
+			div(data-role='fieldcontain')
+				fieldset(data-type='vertical', data-role='controlgroup') 
+					label(for='name') Name
+					input(type="text", name="name")
+			div(data-role='fieldcontain')
+				fieldset(data-type='vertical', data-role='controlgroup') 
+					label(for='title') Title
+					input(type="text", name="title")
+			div(data-role='fieldcontain')   
+				input(type='submit', value='Create new gallery', data-transition='fade', data-theme='c')
+
+
+		each gallery in galleries
+			div(gallery_id="#{gallery._id}")
+				p title
+				input(type="text", name="title", value="#{gallery.title}")
+
+				button.update_gallery Update

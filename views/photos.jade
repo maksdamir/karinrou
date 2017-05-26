@@ -1,0 +1,49 @@
+doctype html
+html
+	head
+		title='Karin Rou'
+		script(src='/javascripts/jquery-1.11.0.min.js')
+		link(rel='stylesheet', href='/stylesheets/style.css')
+		script.
+			function previewFile() {
+				var preview = document.querySelector('img');
+				var file    = document.querySelector('input[type=file]').files[0];
+				var reader  = new FileReader();
+
+				reader.addEventListener("load", function () {
+					preview.src = reader.result;
+				}, false);
+
+				if (file) {
+					reader.readAsDataURL(file);
+				}
+			}
+			$(function() {
+				$('#upload_photo').click(function(){
+					var img_base64_data = $(this).parent().find('img').attr('src');
+					console.log(img_base64_data);
+
+					$.ajax({
+						url: '/photos/',
+						type: 'POST',
+						data: {
+							'img_base64_data' : img_base64_data
+						},
+						success: function(data) {
+							console.log(data);
+							alert('Load was performed.');
+						}
+					});
+				});
+			});
+	body
+		div
+			p Новая фотография
+			input(type="file", onchange="previewFile()")
+			br
+			img(src="", height="200")
+			button#upload_photo Загрузить
+
+		each photo in photos
+			img(src="#{photo.img_base64_data}", height="200")
+		
