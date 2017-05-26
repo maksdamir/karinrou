@@ -16,21 +16,40 @@ cloudinary.config({
 });
 
 router.get('/', function(req, res, next) {
-    Gallery.find({},{},function(e,galleries){
+    Gallery.find({}, {},function(e,galleries){
         res.render('index', {
             "galleries_row_1" : galleries.slice(0,3),
             "galleries_row_2" : galleries.slice(3,6),
             "galleries_row_3" : galleries.slice(6,7)
         });
-    });
+    }).sort( { name: 1 } );
 });
 
 router.get('/photos', function(req, res) {
-	Photo.find({},{}, function(e, photos) {
-		res.render('photos', {
-			"photos" : photos
+
+    Gallery.find({},{},function(e,galleries){
+		Photo.find({},{}, function(e,photos){
+			var galleries_dict = {};
+			for (var i=0; i<galleries.length; ++i) {
+				galleries_dict[galleries[i]._id] = galleries[i];
+				galleries_dict[galleries[i]._id].photos = [];
+			}
+			var unassigned_photos = [];
+			for (var i=0; i<photos.length; ++i) {
+
+				if (photos[i].gallery_id != undefined && galleries_dict[photos[i].gallery_id] != undefined) {
+					galleries_dict[photos[i].gallery_id].photos.push(photos[i]);
+				}
+				else {
+					unassigned_photos.push(photos[i]);
+				}
+			}
+			res.render('photos', {
+				"unassigned_photos" : unassigned_photos,
+				"galleries" : galleries
+			});
 		});
-	});
+    });
 });
 
 router.post('/photos', function(req, res) {
@@ -69,6 +88,16 @@ router.post('/photos', function(req, res) {
 	form.parse(req);
 });
 
+router.put('/photos/:photo_id', function(req, res) {
+	console.log(req.params.photo_id);
+	Photo.findOneAndUpdate({ _id: req.params.photo_id }, req.body, {new: true}, function(err, photo) {
+		if (err)
+			res.send(err);
+		res.json(photo);
+	});
+});
+
+
 router.get('/galleries', function(req, res) {
 	// TODO: redirect if not admin 
 	// res.redirect('/');
@@ -90,10 +119,13 @@ router.post('/galleries', function(req, res) {
 });
 
 router.get('/galleries/:gallery_name', function(req, res) {
-    Gallery.find({ name:req.params.gallery_name },{},function(e,gallery){
-        res.render('gallery', {
-            "gallery" : gallery
-        });
+    Gallery.findOne({ name:req.params.gallery_name },{},function(e,gallery) {
+    	Photo.find({ gallery_id:gallery._id }, {}, function(e, photos) {
+    		res.render('gallery', {
+    			"photos" : photos,
+    			"gallery" : gallery
+    		});
+    	})
     });
 });
 

@@ -12,7 +12,7 @@ html
 					console.log(gallery_object.find('input').val());
 
 					$.ajax({
-						url: '/gallery/',
+						url: '/galleries/'+gallery_id,
 						type: 'PUT',
 						data: "name=John&location=Boston",
 						success: function(data) {

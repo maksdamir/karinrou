@@ -3,5 +3,6 @@ extends layout
 block content
 	#gallery_body
 		#gallery_content
-			a(data-lightbox='test' href='').gallery_photo
-				img(src='data:image/png;')
+			each photo in photos
+				a(data-lightbox='test' href='https://res.cloudinary.com/hf7ourhvw/image/upload/#{photo.cloudinary_public_id}').gallery_photo
+					img(src="https://res.cloudinary.com/hf7ourhvw/image/upload/w_200,h_200,c_fill/#{photo.cloudinary_public_id}", height="200")

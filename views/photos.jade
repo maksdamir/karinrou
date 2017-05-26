@@ -3,8 +3,22 @@ extends layout
 block content
 	script.
 		$(function() {
+			$('.gallery_selector').on('change', function(){
+				var photo_id = $(this).attr('photo_id');
+				var gallery_id = $(this).find(":selected").val();//('gallery_id');
+				console.log(photo_id, gallery_id);
+				$.ajax({
+					url: '/photos/'+photo_id,
+					type: 'PUT',
+					data: {
+						gallery_id: gallery_id
+					},
+					success: function(data){
+						//location.reload();
+					}
+				});
+			});
 			$('#photo_upload_input').on('change', function(){
-
 				var files = $(this).get(0).files;
 
 				if (files.length > 0){
@@ -79,6 +93,30 @@ block content
 	input#photo_upload_input(type="file", name="uploads[]" multiple="multiple")		
 
 
-	each photo in photos
-		img(src="https://res.cloudinary.com/hf7ourhvw/image/upload/#{photo.cloudinary_public_id}", height="200")
-	
+	div
+		h4 Unassigned photos
+		each photo in unassigned_photos
+			div
+				img(src="https://res.cloudinary.com/hf7ourhvw/image/upload/#{photo.cloudinary_public_id}", height="200")
+				br
+				select.gallery_selector(photo_id="#{photo._id}")
+					option(value="", disabled=true, selected=true) Select gallery
+					each gallery in galleries
+						option(value="#{gallery._id}") #{gallery.title}
+
+	each gallery in galleries
+		div
+			h4 #{gallery.title}
+			each gallery_photo in gallery.photos
+				div
+					img(src="https://res.cloudinary.com/hf7ourhvw/image/upload/#{gallery_photo.cloudinary_public_id}", height="200")
+					br
+					select.gallery_selector(photo_id="#{gallery_photo._id}")
+						each gallery in galleries
+							if (gallery_photo.gallery_id.toString() === gallery._id.toString())
+								option(value="#{gallery._id}", selected=true) #{gallery.title}
+							else
+								option(value="#{gallery._id}") #{gallery.title}
+
+
+		
