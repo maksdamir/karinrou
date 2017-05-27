@@ -16,18 +16,18 @@ cloudinary.config({
 });
 
 router.get('/', function(req, res, next) {
-    Gallery.find({}, {},function(e,galleries){
+    Gallery.find({ $query: { name: { $ne: "0" } }, $orderby: { name : 1 } }, {},function(e,galleries){
         res.render('index', {
             "galleries_row_1" : galleries.slice(0,3),
             "galleries_row_2" : galleries.slice(3,6),
             "galleries_row_3" : galleries.slice(6,7)
         });
-    }).sort( { name: 1 } );
+    });
 });
 
 router.get('/photos', function(req, res) {
 
-    Gallery.find({},{},function(e,galleries){
+    Gallery.find({ $query: { }, $orderby: { name : 1 } },{},function(e,galleries){
 		Photo.find({},{}, function(e,photos){
 			var galleries_dict = {};
 			for (var i=0; i<galleries.length; ++i) {
@@ -46,7 +46,7 @@ router.get('/photos', function(req, res) {
 			}
 			res.render('photos', {
 				"unassigned_photos" : unassigned_photos,
-				"galleries" : galleries
+				"galleries" : galleries_dict
 			});
 		});
     });
@@ -66,6 +66,7 @@ router.post('/photos', function(req, res) {
 			// console.log(result);
 			var new_photo = new Photo();
 			new_photo.cloudinary_public_id = result.public_id;
+			new_photo.gallery_id = "5928a613f0b79922962e104d"; // TODO replace with query, or use name?
 			new_photo.save(function(err, ph) {
 				if (err)
 					res.send(err);
@@ -99,14 +100,16 @@ router.put('/photos/:photo_id', function(req, res) {
 
 
 router.get('/galleries', function(req, res) {
-	// TODO: redirect if not admin 
-	// res.redirect('/');
+	//res.redirect('/');
+	//return;
+	
+	// disable for now - constant galleries
 
     Gallery.find({},{},function(e,galleries){
         res.render('galleries', {
             "galleries" : galleries
         });
-    });
+    }).sort( { name: 1 } );
 });
 
 router.post('/galleries', function(req, res) {
@@ -120,6 +123,10 @@ router.post('/galleries', function(req, res) {
 
 router.get('/galleries/:gallery_name', function(req, res) {
     Gallery.findOne({ name:req.params.gallery_name },{},function(e,gallery) {
+    	if (gallery == undefined) {
+    		res.redirect('/');
+    		return;
+    	}
     	Photo.find({ gallery_id:gallery._id }, {}, function(e, photos) {
     		res.render('gallery', {
     			"photos" : photos,
