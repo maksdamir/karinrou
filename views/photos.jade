@@ -98,7 +98,8 @@ block content
 
 			each gallery in galleries
 				div
-					h3 #{gallery.title}
+					h3
+						a(href="/galleries/#{gallery.name}") #{gallery.title}
 					each gallery_photo in gallery.photos
 						div.gallery_photo_admin
 							img(src="https://res.cloudinary.com/hf7ourhvw/image/upload/#{gallery_photo.cloudinary_public_id}", height="200")
