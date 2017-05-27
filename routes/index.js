@@ -44,9 +44,19 @@ router.get('/photos', function(req, res) {
 					unassigned_photos.push(photos[i]);
 				}
 			}
+
+			var galleries_arr = [];
+			for (var i in galleries) {
+				galleries_arr.push(galleries[i]);
+			}
+
+			galleries_arr.sort(function(a, b) {
+			    return parseInt(a.name) - parseInt(b.name);
+			});
+
 			res.render('photos', {
 				"unassigned_photos" : unassigned_photos,
-				"galleries" : galleries_dict
+				"galleries" : galleries_arr
 			});
 		});
     });
