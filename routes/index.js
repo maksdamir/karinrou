@@ -16,13 +16,13 @@ cloudinary.config({
 });
 
 router.get('/', function(req, res, next) {
-    Gallery.find({ $query: { name: { $ne: "0" } }, $orderby: { name : 1 } }, {},function(e,galleries){
+    Gallery.find({ name: { $ne: "0" } }, {},function(e,galleries){
         res.render('index', {
             "galleries_row_1" : galleries.slice(0,3),
             "galleries_row_2" : galleries.slice(3,6),
             "galleries_row_3" : galleries.slice(6,7)
         });
-    });
+    }).sort( { name: 1 } );
 });
 
 router.get('/photos', function(req, res) {
