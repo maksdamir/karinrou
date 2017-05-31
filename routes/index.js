@@ -135,8 +135,8 @@ module.exports = function(app, passport) {
 
 
 	app.get('/galleries', function(req, res) {
-		//res.redirect('/');
-		//return;
+		res.redirect('/');
+		return;
 		
 		// disable for now - constant galleries
 
