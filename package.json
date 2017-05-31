@@ -15,18 +15,24 @@
   "license": "ISC",
   "homepage": "https://github.com/maksdamir/karinrou/blob/master/README.md",
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "~1.17.1",
     "cloudinary": "^1.9.0",
+    "connect-flash": "^0.1.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
     "express": "~4.15.2",
+    "express-session": "^1.15.3",
     "formidable": "^1.1.1",
     "jade": "~1.11.0",
     "mongodb": "^2.2.27",
     "mongoose": "^4.10.2",
     "monk": "^5.0.2",
     "morgan": "~1.8.1",
-    "serve-favicon": "~2.4.2"
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "serve-favicon": "~2.4.2",
+    "session-file-store": "^1.0.0"
   },
   "devDependencies": {}
 }

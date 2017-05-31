@@ -4,12 +4,17 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('express-session');
+var passport = require('passport');
+var flash    = require('connect-flash');
+
+var configDB = require('./config/database.js');
 
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-//mongoose.connect('mongodb://karinrou:Bqj95YWH8mvEr0KnkMWK6lCBSpq2mD5bGMWtHA0BDWFxc5eC9hAOU15QL5UDI1ITkha0YKs2uuyF49d4amzu3w==@karinrou.documents.azure.com:10255/?ssl=true&replicaSet=globaldb');
-mongoose.connect('mongodb://admin:admin@ds153501.mlab.com:53501/heroku_bxshszlm');
+mongoose.connect(configDB.url);
 
+require('./config/passport')(passport);
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -28,8 +33,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/users', users);
+
+app.use(session({ secret: 'karinrouhere' }));
+app.use(passport.initialize());  
+app.use(passport.session()); 
+app.use(flash());
+
+require('./routes/index.js')(app, passport);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
