@@ -17,7 +17,6 @@ cloudinary.config({
 });
 
 function authenticationMiddleware (req, res, next) {
-	console.log(next);
 	if (req.isAuthenticated()) {
 		return next();
 	}
@@ -47,10 +46,18 @@ module.exports = function(app, passport) {
 	// });
 
 	app.get('/login', function(req, res) {
+		if (req.isAuthenticated()) {
+			res.redirect('/photos');
+			return;
+		}
 		res.render('login', {});
 	});
 
-	app.get('/photos', authenticationMiddleware, function(req, res) {
+	app.get('/photos', function(req, res) {
+		if (!req.isAuthenticated()) {
+			res.redirect('/login');
+			return;
+		}
 
 	    Gallery.find({ $query: { }, $orderby: { name : 1 } },{}, function(e,galleries){
 			Photo.find({},{}, function(e,photos){
@@ -125,7 +132,6 @@ module.exports = function(app, passport) {
 	});
 
 	app.put('/photos/:photo_id', function(req, res) {
-		console.log(req.params.photo_id);
 		Photo.findOneAndUpdate({ _id: req.params.photo_id }, req.body, {new: true}, function(err, photo) {
 			if (err)
 				res.send(err);
