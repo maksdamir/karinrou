@@ -221,6 +221,7 @@ font-family:sans-serif;
 		}
 
 		.tab-content{
+			margin-top: 20px;
 			display: none;
 			background: #ededed;
 			padding: 15px;
@@ -229,3 +230,8 @@ font-family:sans-serif;
 		.tab-content.current{
 			display: inherit;
 		}
+
+.photo_upload_element {
+	padding: 10px 15px;
+	display: inline-block;
+}
