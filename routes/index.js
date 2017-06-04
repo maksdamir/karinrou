@@ -100,19 +100,21 @@ module.exports = function(app, passport) {
 
 		// specify that we want to allow the user to upload multiple files in a single request
 		form.multiples = true;
+		let gallery_id = '5928a613f0b79922962e104d'; // TODO replace with query, or use name?
 
-		// every time a file has been uploaded successfully,
-		// rename it to it's orignal name
+		form.on('field', function(name, field) {
+			if (name === 'gallery_id')
+				gallery_id = field;
+		});
+
 		form.on('file', function(field, file) {
-			cloudinary.uploader.upload(file.path, function(result) { 
-				// console.log(result);
+			cloudinary.uploader.upload(file.path, function(result) {
 				var new_photo = new Photo();
 				new_photo.cloudinary_public_id = result.public_id;
-				new_photo.gallery_id = "5928a613f0b79922962e104d"; // TODO replace with query, or use name?
+				new_photo.gallery_id = gallery_id;
 				new_photo.save(function(err, ph) {
 					if (err)
 						res.send(err);
-					// console.log(ph);
 				});
 			});
 		});

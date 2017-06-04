@@ -18,8 +18,8 @@ block content
 					}
 				});
 			});
-			$('#photo_upload_input').on('change', function(){
-				var files = $(this).get(0).files;
+			$('#photo_upload_button').on('click', function(){
+				var files = $('#photo_upload_input').get(0).files;
 
 				if (files.length > 0){
 					// One or more files selected, process the file upload
@@ -36,7 +36,7 @@ block content
 						formData.append('uploads[]', file, file.name);
 					}
 
-					console.log(formData);
+					formData.append('gallery_id', $('#photo_upload_gallery_selector').find(':selected').val());
 
 					$.ajax({
 						url: '/photos',
@@ -82,17 +82,20 @@ block content
 
 	#gallery_body
 		#gallery_content.admin
-			.container
-				.row
-					.col-xs-12
-						.panel.panel-default
-							.panel-body
-								span.glyphicon.glyphicon-cloud-upload
-								h2 Загрузить фотографии
-								.progress
-									.progress-bar(role="progressbar")
-								
-			input#photo_upload_input(type="file", name="uploads[]" multiple="multiple")		
+			
+			div
+				h2 Загрузить фотографии
+				.progress-bar(role="progressbar")
+						
+				input#photo_upload_input(type="file", name="uploads[]" multiple="multiple")
+				button#photo_upload_button(type="button") Загрузить	
+
+				div
+					label Папка
+					select#photo_upload_gallery_selector
+						each gallery in galleries
+							option(value="#{gallery._id}") #{gallery.title}
+
 
 			each gallery in galleries
 				div
