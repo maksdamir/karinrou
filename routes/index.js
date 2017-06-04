@@ -112,6 +112,7 @@ module.exports = function(app, passport) {
 				var new_photo = new Photo();
 				new_photo.cloudinary_public_id = result.public_id;
 				new_photo.gallery_id = gallery_id;
+				new_photo.enabled = true;
 				new_photo.save(function(err, ph) {
 					if (err)
 						res.send(err);

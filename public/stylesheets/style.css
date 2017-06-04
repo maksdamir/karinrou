@@ -198,3 +198,21 @@ font-family:sans-serif;
     top: 30px;
     line-height: 18px;
 }
+.gallery_admin .gallery_photos_admin {
+	display: none;
+}
+.gallery_admin .gallery_title_admin {
+	background-color: inherit;
+}
+.gallery_admin.active .gallery_photos_admin {
+	display: block;
+}
+.gallery_admin.active .gallery_title_admin {
+	background-color: #ccc;
+}
+.gallery_admin .gallery_title_admin:hover {
+	background-color: #ddd;
+}
+.gallery_title_admin {
+	cursor: pointer;
+}

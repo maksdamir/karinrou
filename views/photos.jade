@@ -18,6 +18,9 @@ block content
 					}
 				});
 			});
+			$('.gallery_title_admin').on('click', function() {
+				$(this).parent().toggleClass('active');
+			});
 			$('#photo_upload_button').on('click', function(){
 				var files = $('#photo_upload_input').get(0).files;
 
@@ -89,7 +92,6 @@ block content
 						
 				input#photo_upload_input(type="file", name="uploads[]" multiple="multiple")
 				button#photo_upload_button(type="button") Загрузить	
-
 				div
 					label Папка
 					select#photo_upload_gallery_selector
@@ -98,19 +100,19 @@ block content
 
 
 			each gallery in galleries
-				div
-					h3
-						a(href="/galleries/#{gallery.name}") #{gallery.title}
-					each gallery_photo in gallery.photos
-						div.gallery_photo_admin
-							img(src="https://res.cloudinary.com/hf7ourhvw/image/upload/#{gallery_photo.cloudinary_public_id}", height="200")
-							br
-							select.gallery_selector(photo_id="#{gallery_photo._id}")
-								each gallery in galleries
-									if (gallery_photo.gallery_id.toString() === gallery._id.toString())
-										option(value="#{gallery._id}", selected=true) #{gallery.title}
-									else
-										option(value="#{gallery._id}") #{gallery.title}
+				div.gallery_admin
+					h3.gallery_title_admin #{gallery.title} (#{gallery.photos.length} фото)
+					div.gallery_photos_admin
+						each gallery_photo in gallery.photos
+							div.gallery_photo_admin
+								img(src="https://res.cloudinary.com/hf7ourhvw/image/upload/#{gallery_photo.cloudinary_public_id}", height="200")
+								br
+								select.gallery_selector(photo_id="#{gallery_photo._id}")
+									each gallery in galleries
+										if (gallery_photo.gallery_id.toString() === gallery._id.toString())
+											option(value="#{gallery._id}", selected=true) #{gallery.title}
+										else
+											option(value="#{gallery._id}") #{gallery.title}
 
 
 				
