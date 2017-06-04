@@ -198,21 +198,34 @@ font-family:sans-serif;
     top: 30px;
     line-height: 18px;
 }
-.gallery_admin .gallery_photos_admin {
-	display: none;
+
+#photo_galleries_admin {
+	margin-top:20px;
 }
-.gallery_admin .gallery_title_admin {
-	background-color: inherit;
-}
-.gallery_admin.active .gallery_photos_admin {
-	display: block;
-}
-.gallery_admin.active .gallery_title_admin {
-	background-color: #ccc;
-}
-.gallery_admin .gallery_title_admin:hover {
-	background-color: #ddd;
-}
-.gallery_title_admin {
-	cursor: pointer;
-}
+		ul.tabs{
+			margin: 0px;
+			padding: 0px;
+			list-style: none;
+		}
+		ul.tabs li{
+			background: none;
+			color: #222;
+			display: inline-block;
+			padding: 10px 15px;
+			cursor: pointer;
+		}
+
+		ul.tabs li.current{
+			background: #ededed;
+			color: #222;
+		}
+
+		.tab-content{
+			display: none;
+			background: #ededed;
+			padding: 15px;
+		}
+
+		.tab-content.current{
+			display: inherit;
+		}

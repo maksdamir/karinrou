@@ -3,6 +3,18 @@ extends layout
 block content
 	script.
 		$(function() {
+			$('#photo_galleries_admin li:first').toggleClass('current');
+			$('#photo_galleries_admin .tab-content:first').toggleClass('current');
+			$('ul.tabs li').click(function(){
+				var tab_id = $(this).attr('data-tab');
+
+				$('ul.tabs li').removeClass('current');
+				$('.tab-content').removeClass('current');
+
+				$(this).addClass('current');
+				$("#"+tab_id).addClass('current');
+			})
+
 			$('.gallery_selector').on('change', function(){
 				var photo_id = $(this).attr('photo_id');
 				var gallery_id = $(this).find(":selected").val();//('gallery_id');
@@ -98,21 +110,27 @@ block content
 						each gallery in galleries
 							option(value="#{gallery._id}") #{gallery.title}
 
+			div#photo_galleries_admin
+				ul.tabs
+					each gallery, index in galleries
+						li.tab-link(data-tab="tab-#{index}") #{gallery.title} (#{gallery.photos.length} фото)
+				each gallery, index in galleries
+					div(id="tab-#{index}", class="tab-content")
+						div.gallery_admin
+							div.gallery_photos_admin
+								each gallery_photo in gallery.photos
+									div.gallery_photo_admin
+										img(src="https://res.cloudinary.com/hf7ourhvw/image/upload/#{gallery_photo.cloudinary_public_id}", height="200")
+										br
+										select.gallery_selector(photo_id="#{gallery_photo._id}")
+											each gallery in galleries
+												if (gallery_photo.gallery_id.toString() === gallery._id.toString())
+													option(value="#{gallery._id}", selected=true) #{gallery.title}
+												else
+													option(value="#{gallery._id}") #{gallery.title}
 
-			each gallery in galleries
-				div.gallery_admin
-					h3.gallery_title_admin #{gallery.title} (#{gallery.photos.length} фото)
-					div.gallery_photos_admin
-						each gallery_photo in gallery.photos
-							div.gallery_photo_admin
-								img(src="https://res.cloudinary.com/hf7ourhvw/image/upload/#{gallery_photo.cloudinary_public_id}", height="200")
-								br
-								select.gallery_selector(photo_id="#{gallery_photo._id}")
-									each gallery in galleries
-										if (gallery_photo.gallery_id.toString() === gallery._id.toString())
-											option(value="#{gallery._id}", selected=true) #{gallery.title}
-										else
-											option(value="#{gallery._id}") #{gallery.title}
+
+					
 
 
-				
+					
