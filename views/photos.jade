@@ -91,6 +91,8 @@ block content
 						li.tab-link(data-tab="tab-#{index}") #{gallery.title} (#{gallery.photos.length} фото)
 				each gallery, index in galleries
 					div(id="tab-#{index}", class="tab-content")
+						h4
+							a(href='/galleries/#{gallery.name}', target='_blank')Перейти к альбому
 						div.gallery_admin
 							div.gallery_photos_admin
 								each gallery_photo in gallery.photos
